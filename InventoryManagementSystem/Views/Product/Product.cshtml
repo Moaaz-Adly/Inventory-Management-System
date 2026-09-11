@@ -1,0 +1,60 @@
+﻿@model List<Product>
+
+<div class="container mt-4">
+
+    <h1 class="text-center mb-4">Stock Browsing</h1>
+
+    <table class="table table-bordered table-hover">
+
+        <thead class="table-dark">
+            <tr>
+                <th>Product Name</th>
+                <th>SKU</th>
+                <th>Stock Quantity</th>
+                <th>Low Stock Threshold</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>@product.ProductName</td>
+                    <td>@product.SKU</td>
+                    <td>@product.StockQuantity</td>
+                    <td>@product.LowStockThreshold</td>
+
+                    <td>
+                        @if (product.StockQuantity == 0)
+                        {
+                            <span class="badge bg-danger">
+                                Out of Stock
+                            </span>
+                        }
+                        else if (product.StockQuantity <= product.LowStockThreshold)
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Low Stock
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">
+                                In Stock
+                            </span>
+                        }
+                    </td>
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Back to Products
+    </a>
+
+</div>

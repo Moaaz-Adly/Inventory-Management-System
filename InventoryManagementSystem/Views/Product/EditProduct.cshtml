@@ -1,0 +1,73 @@
+﻿@using InventoryManagementSystem.Models.ViewModel
+@model EditProVM
+
+<div class="container mt-4" asp-validation-summary="All">
+
+    <h1 class="text-center mb-4">Edit Product</h1>
+
+    <form asp-action="SaveEdit" method="post">
+
+        <input type="hidden" asp-for="ProId" />
+
+        <div class="mb-3">
+            <label asp-for="ProSKU" class="form-label"></label>
+            <input asp-for="ProSKU" class="form-control" />
+            <span asp-validation-for="ProSKU" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ProName" class="form-label"></label>
+            <input asp-for="ProName" class="form-control" />
+            <span asp-validation-for="ProName" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="CategoryId" class="form-label">Category</label>
+
+            <select asp-for="CategoryId" class="form-select">
+                <option value="">-- Select Category --</option>
+
+                @foreach (var category in Model.categories)
+                {
+                    <option value="@category.CategoryId">
+                        @category.CategoryName
+                    </option>
+                }
+            </select>
+
+            <span asp-validation-for="CategoryId" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="ProPrice" class="form-label"></label>
+            <input asp-for="ProPrice" class="form-control" />
+            <span asp-validation-for="ProPrice" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="StockQuantity" class="form-label"></label>
+            <input asp-for="StockQuantity" class="form-control" />
+            <span asp-validation-for="StockQuantity" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="LowStockQuantity" class="form-label"></label>
+            <input asp-for="LowStockQuantity" class="form-control" />
+            <span asp-validation-for="LowStockQuantity" class="text-danger"></span>
+        </div>
+
+        <button type="submit" class="btn btn-success">
+            Save Changes
+        </button>
+
+        <a asp-action="Index" class="btn btn-secondary">
+            Back
+        </a>
+
+    </form>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,89 @@
+﻿@using InventoryManagementSystem.Models.ViewModel
+@model DetailsProVM
+
+<div class="container mt-5">
+
+    <h1 class="text-center mb-4">Product Details</h1>
+
+    <div class="card shadow">
+
+        <div class="card-body">
+
+            <h3 class="mb-4">@Model.ProductName</h3>
+
+            <table class="table table-bordered">
+
+                <tr>
+                    <th>Product ID</th>
+                    <td>@Model.ProductID</td>
+                </tr>
+
+                <tr>
+                    <th>SKU</th>
+                    <td>@Model.SKU</td>
+                </tr>
+
+                <tr>
+                    <th>Product Name</th>
+                    <td>@Model.ProductName</td>
+                </tr>
+
+                <tr>
+                    <th>Category</th>
+                    <td>@Model.CategoryName</td>
+                </tr>
+
+                <tr>
+                    <th>Unit Price</th>
+                    <td>@Model.UnitPrice</td>
+                </tr>
+
+                <tr>
+                    <th>Stock Quantity</th>
+                    <td>@Model.StockQuantity</td>
+                </tr>
+
+                <tr>
+                    <th>Low Stock Threshold</th>
+                    <td>@Model.LowStockThreshold</td>
+                </tr>
+
+                <tr>
+                    <th>Total Purchased</th>
+                    <td>@Model.TotalPurchasedQuantity</td>
+                </tr>
+
+                <tr>
+                    <th>Total Sold</th>
+                    <td>@Model.TotalSoldQuantity</td>
+                </tr>
+
+                <tr>
+                    <th>Supplier</th>
+                    <td>@Model.SupplierName</td>
+                </tr>
+
+            </table>
+
+            <a asp-action="Edit"
+               asp-route-id="@Model.ProductID"
+               class="btn btn-warning">
+                Edit
+            </a>
+
+            <a asp-action="Delete"
+               asp-route-id="@Model.ProductID"
+               class="btn btn-danger">
+                Delete
+            </a>
+
+            <a asp-action="Index"
+               class="btn btn-secondary">
+                Back
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
