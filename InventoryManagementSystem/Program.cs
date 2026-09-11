@@ -1,3 +1,6 @@
+using InventoryManagementSystem.Models;
+using Microsoft.EntityFrameworkCore;
+
 namespace InventoryManagementSystem
 {
     public class Program
@@ -8,7 +11,10 @@ namespace InventoryManagementSystem
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
+            builder.Services.AddDbContext<InventoryDbContext>(options =>
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+            });
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
