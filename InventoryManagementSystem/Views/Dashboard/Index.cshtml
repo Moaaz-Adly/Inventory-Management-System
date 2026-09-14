@@ -1,0 +1,533 @@
+﻿@using InventoryManagementSystem.Models.ViewModel
+@model DashboardViewModel
+
+@{
+    ViewData["Title"] = "لوحة التحكم";
+}
+
+<div class="container-fluid" dir="rtl">
+
+    <!-- Page Title -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h3 class="mb-1">
+                <i class="fa-solid fa-gauge me-2"></i>
+                لوحة التحكم
+            </h3>
+
+            <p class="text-muted mb-0">
+                نظرة عامة على المخزون والمبيعات والمشتريات
+            </p>
+        </div>
+    </div>
+
+
+    <!-- ================= KPI CARDS ================= -->
+
+    <div class="row g-3 mb-4">
+
+        <!-- Total Products -->
+        <div class="col-12 col-sm-6 col-lg-2">
+            <div class="kpi-card bg-kpi-1 d-flex justify-content-between align-items-center">
+                <div>
+                    <div>إجمالي المنتجات</div>
+                    <h3>@Model.TotalProducts</h3>
+                </div>
+
+                <i class="fa-solid fa-box kpi-icon"></i>
+            </div>
+        </div>
+
+
+        <!-- Total Categories -->
+        <div class="col-12 col-sm-6 col-lg-2">
+            <div class="kpi-card bg-kpi-6 d-flex justify-content-between align-items-center">
+                <div>
+                    <div>الفئات</div>
+                    <h3>@Model.TotalCategories</h3>
+                </div>
+
+                <i class="fa-solid fa-tags kpi-icon"></i>
+            </div>
+        </div>
+
+
+        <!-- Total Suppliers -->
+        <div class="col-12 col-sm-6 col-lg-2">
+            <div class="kpi-card bg-kpi-5 d-flex justify-content-between align-items-center">
+                <div>
+                    <div>الموردين</div>
+                    <h3>@Model.TotalSuppliers</h3>
+                </div>
+
+                <i class="fa-solid fa-truck kpi-icon"></i>
+            </div>
+        </div>
+
+
+        <!-- Total Stock -->
+        <div class="col-12 col-sm-6 col-lg-2">
+            <div class="kpi-card bg-kpi-2 d-flex justify-content-between align-items-center">
+                <div>
+                    <div>كمية المخزون</div>
+                    <h3>@Model.TotalStockQuantity</h3>
+                </div>
+
+                <i class="fa-solid fa-warehouse kpi-icon"></i>
+            </div>
+        </div>
+
+
+        <!-- Low Stock -->
+        <div class="col-12 col-sm-6 col-lg-2">
+            <div class="kpi-card bg-kpi-4 d-flex justify-content-between align-items-center">
+                <div>
+                    <div>مخزون منخفض</div>
+                    <h3>@Model.LowStockCount</h3>
+                </div>
+
+                <i class="fa-solid fa-triangle-exclamation kpi-icon"></i>
+            </div>
+        </div>
+
+
+        <!-- Sales -->
+        <div class="col-12 col-sm-6 col-lg-2">
+            <div class="kpi-card bg-kpi-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <div>إجمالي المبيعات</div>
+
+                    <h3>
+                        @Model.TotalSalesAmount.ToString("N0")
+                        <small>ج.م</small>
+                    </h3>
+                </div>
+
+                <i class="fa-solid fa-sack-dollar kpi-icon"></i>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- ================= PURCHASES / SALES ================= -->
+
+    <div class="row g-3 mb-4">
+
+        <!-- Purchases -->
+        <div class="col-12 col-lg-6">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <h5 class="mb-3">
+                        <i class="fa-solid fa-cart-shopping me-2"></i>
+                        إجمالي المشتريات
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-6">
+
+                            <div class="text-muted small">
+                                عدد العمليات
+                            </div>
+
+                            <h4 class="mt-1">
+                                @Model.TotalPurchasesCount
+                            </h4>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <div class="text-muted small">
+                                القيمة الإجمالية
+                            </div>
+
+                            <h4 class="mt-1">
+                                @Model.TotalPurchasesAmount.ToString("N2")
+                                <small>ج.م</small>
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Sales -->
+        <div class="col-12 col-lg-6">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <h5 class="mb-3">
+                        <i class="fa-solid fa-money-bill-trend-up me-2"></i>
+                        إجمالي المبيعات
+                    </h5>
+
+                    <div class="row">
+
+                        <div class="col-6">
+
+                            <div class="text-muted small">
+                                عدد العمليات
+                            </div>
+
+                            <h4 class="mt-1">
+                                @Model.TotalSalesCount
+                            </h4>
+
+                        </div>
+
+
+                        <div class="col-6">
+
+                            <div class="text-muted small">
+                                القيمة الإجمالية
+                            </div>
+
+                            <h4 class="mt-1">
+                                @Model.TotalSalesAmount.ToString("N2")
+                                <small>ج.م</small>
+                            </h4>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= CHART / LOW STOCK ================= -->
+
+    <div class="row g-3 mb-4">
+
+        <!-- Chart -->
+        <div class="col-12 col-lg-6">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <h5 class="mb-3">
+                        <i class="fa-solid fa-chart-column me-2"></i>
+                        الأكثر مبيعًا
+                    </h5>
+
+                    <div style="height:300px;">
+                        <canvas id="topProductsChart"></canvas>
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Low Stock Products -->
+        <div class="col-12 col-lg-6">
+
+            <div class="card shadow-sm border-0 h-100">
+
+                <div class="card-body">
+
+                    <h5 class="mb-3">
+                        <i class="fa-solid fa-triangle-exclamation me-2"></i>
+                        منتجات المخزون المنخفض
+                    </h5>
+
+                    <div class="table-responsive">
+
+                        <table class="table table-hover align-middle">
+
+                            <thead>
+
+                                <tr>
+                                    <th>المنتج</th>
+                                    <th>الفئة</th>
+                                    <th>الكمية</th>
+                                    <th>الحد الأدنى</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                @if (Model.LowStockProducts.Any())
+                                {
+                                    foreach (var product in Model.LowStockProducts)
+                                    {
+                                        <tr>
+
+                                            <td>
+                                                <strong>
+                                                    @product.ProductName
+                                                </strong>
+                                            </td>
+
+                                            <td>
+                                                @(product.Category?.CategoryName ?? "-")
+                                            </td>
+
+                                            <td>
+
+                                                <span class="badge bg-danger">
+                                                    @product.StockQuantity
+                                                </span>
+
+                                            </td>
+
+                                            <td>
+                                                @product.LowStockThreshold
+                                            </td>
+
+                                        </tr>
+                                    }
+                                }
+                                else
+                                {
+                                    <tr>
+
+                                        <td colspan="4"
+                                            class="text-center text-muted py-4">
+
+                                            <i class="fa-solid fa-circle-check me-2"></i>
+
+                                            لا توجد منتجات منخفضة المخزون حاليًا 🎉
+
+                                        </td>
+
+                                    </tr>
+                                }
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= RECENT ACTIVITY ================= -->
+
+    <div class="card shadow-sm border-0 mb-4">
+
+        <div class="card-body">
+
+            <h5 class="mb-3">
+                <i class="fa-solid fa-clock-rotate-left me-2"></i>
+                أحدث النشاطات
+            </h5>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+                            <th>النوع</th>
+                            <th>الوصف</th>
+                            <th>التاريخ</th>
+                            <th>القيمة</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        @if (Model.RecentActivity.Any())
+                        {
+                            foreach (var activity in Model.RecentActivity)
+                            {
+                                <tr>
+
+                                    <td>
+
+                                        @if (activity.Type == "بيع")
+                                        {
+                                            <span class="badge bg-success">
+                                                <i class="fa-solid fa-cart-shopping me-1"></i>
+                                                بيع
+                                            </span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-primary">
+                                                <i class="fa-solid fa-box-open me-1"></i>
+                                                شراء
+                                            </span>
+                                        }
+
+                                    </td>
+
+
+                                    <td>
+                                        @activity.Description
+                                    </td>
+
+
+                                    <td>
+                                        @activity.Date.ToString("yyyy-MM-dd HH:mm")
+                                    </td>
+
+
+                                    <td>
+
+                                        <strong>
+                                            @activity.Amount.ToString("N2")
+                                            ج.م
+                                        </strong>
+
+                                    </td>
+
+                                </tr>
+                            }
+                        }
+                        else
+                        {
+                            <tr>
+
+                                <td colspan="4"
+                                    class="text-center text-muted py-4">
+
+                                    <i class="fa-solid fa-inbox me-2"></i>
+
+                                    لا يوجد نشاط حديث بعد
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- ================= CHART JS ================= -->
+@section Scripts {
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+
+    <script>
+
+        const topProductsLabels =
+            @Html.Raw(
+                System.Text.Json.JsonSerializer.Serialize(
+                        Model.MostSoldProducts.Select(p => p.ProductName)
+                )
+                );
+
+    const topProductsData =
+        @Html.Raw(
+                        System.Text.Json.JsonSerializer.Serialize(
+                                Model.MostSoldProducts.Select(p => p.TotalQuantitySold)
+                        )
+                );
+
+
+    const chartElement =
+        document.getElementById("topProductsChart");
+
+
+    if (chartElement) {
+
+        new Chart(chartElement, {
+
+            type: "bar",
+
+            data: {
+
+                labels: topProductsLabels.length
+                    ? topProductsLabels
+                    : ["لا توجد بيانات بعد"],
+
+                datasets: [
+
+                    {
+                        label: "الكمية المباعة",
+
+                        data: topProductsData.length
+                            ? topProductsData
+                            : [0],
+
+                        backgroundColor: "#6366f1",
+
+                        borderRadius: 6,
+
+                        borderWidth: 0
+                    }
+
+                ]
+
+            },
+
+            options: {
+
+                responsive: true,
+
+                maintainAspectRatio: false,
+
+                plugins: {
+
+                    legend: {
+                        display: false
+                    }
+
+                },
+
+                scales: {
+
+                    y: {
+
+                        beginAtZero: true,
+
+                        ticks: {
+                            precision: 0
+                        }
+
+                    }
+
+                }
+
+            }
+
+        });
+
+    }
+
+</script>
+}

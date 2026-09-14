@@ -23,10 +23,7 @@ namespace InventoryManagementSystem.Models
         public DbSet<PurchaseItem> PurchaseItems { get; set; }
         public DbSet<Sale> Sales { get; set; }
         public DbSet<SaleItem> SaleItems { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Data Source=.\\SQLEXPRESS;Initial catalog=ITIPro;Integrated Security=true;TrustServerCertificate=true");
-        }
+       
 
     }
 }
