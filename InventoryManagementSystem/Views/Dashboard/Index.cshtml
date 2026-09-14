@@ -12,11 +12,11 @@
         <div>
             <h3 class="mb-1">
                 <i class="fa-solid fa-gauge me-2"></i>
-                لوحة التحكم
+                Dashboard
             </h3>
 
             <p class="text-muted mb-0">
-                نظرة عامة على المخزون والمبيعات والمشتريات
+                Overview of Inventory, Sales, and Purchases
             </p>
         </div>
     </div>
@@ -30,7 +30,7 @@
         <div class="col-12 col-sm-6 col-lg-2">
             <div class="kpi-card bg-kpi-1 d-flex justify-content-between align-items-center">
                 <div>
-                    <div>إجمالي المنتجات</div>
+                    <div>Total products</div>
                     <h3>@Model.TotalProducts</h3>
                 </div>
 
@@ -43,7 +43,7 @@
         <div class="col-12 col-sm-6 col-lg-2">
             <div class="kpi-card bg-kpi-6 d-flex justify-content-between align-items-center">
                 <div>
-                    <div>الفئات</div>
+                    <div>Categories</div>
                     <h3>@Model.TotalCategories</h3>
                 </div>
 
@@ -56,7 +56,7 @@
         <div class="col-12 col-sm-6 col-lg-2">
             <div class="kpi-card bg-kpi-5 d-flex justify-content-between align-items-center">
                 <div>
-                    <div>الموردين</div>
+                    <div>Suppliers</div>
                     <h3>@Model.TotalSuppliers</h3>
                 </div>
 
@@ -69,7 +69,7 @@
         <div class="col-12 col-sm-6 col-lg-2">
             <div class="kpi-card bg-kpi-2 d-flex justify-content-between align-items-center">
                 <div>
-                    <div>كمية المخزون</div>
+                    <div>Inventory quantity</div>
                     <h3>@Model.TotalStockQuantity</h3>
                 </div>
 
@@ -82,7 +82,7 @@
         <div class="col-12 col-sm-6 col-lg-2">
             <div class="kpi-card bg-kpi-4 d-flex justify-content-between align-items-center">
                 <div>
-                    <div>مخزون منخفض</div>
+                    <div>Low stock</div>
                     <h3>@Model.LowStockCount</h3>
                 </div>
 
@@ -99,7 +99,7 @@
 
                     <h3>
                         @Model.TotalSalesAmount.ToString("N0")
-                        <small>ج.م</small>
+                        <small>EGP</small>
                     </h3>
                 </div>
 
@@ -123,7 +123,7 @@
 
                     <h5 class="mb-3">
                         <i class="fa-solid fa-cart-shopping me-2"></i>
-                        إجمالي المشتريات
+                        Total purchases
                     </h5>
 
                     <div class="row">
@@ -131,7 +131,7 @@
                         <div class="col-6">
 
                             <div class="text-muted small">
-                                عدد العمليات
+                                Number of operations
                             </div>
 
                             <h4 class="mt-1">
@@ -144,12 +144,12 @@
                         <div class="col-6">
 
                             <div class="text-muted small">
-                                القيمة الإجمالية
+                                Total Value
                             </div>
 
                             <h4 class="mt-1">
                                 @Model.TotalPurchasesAmount.ToString("N2")
-                                <small>ج.م</small>
+                                <small>EGP</small>
                             </h4>
 
                         </div>
@@ -172,7 +172,7 @@
 
                     <h5 class="mb-3">
                         <i class="fa-solid fa-money-bill-trend-up me-2"></i>
-                        إجمالي المبيعات
+                        Total Sales
                     </h5>
 
                     <div class="row">
@@ -180,7 +180,7 @@
                         <div class="col-6">
 
                             <div class="text-muted small">
-                                عدد العمليات
+                                Number of operations
                             </div>
 
                             <h4 class="mt-1">
@@ -193,12 +193,12 @@
                         <div class="col-6">
 
                             <div class="text-muted small">
-                                القيمة الإجمالية
+                                Total Value
                             </div>
 
                             <h4 class="mt-1">
                                 @Model.TotalSalesAmount.ToString("N2")
-                                <small>ج.م</small>
+                                <small>EGP</small>
                             </h4>
 
                         </div>
@@ -227,7 +227,7 @@
 
                     <h5 class="mb-3">
                         <i class="fa-solid fa-chart-column me-2"></i>
-                        الأكثر مبيعًا
+                        best seller
                     </h5>
 
                     <div style="height:300px;">
@@ -250,7 +250,7 @@
 
                     <h5 class="mb-3">
                         <i class="fa-solid fa-triangle-exclamation me-2"></i>
-                        منتجات المخزون المنخفض
+                        Low-stock products
                     </h5>
 
                     <div class="table-responsive">
@@ -260,10 +260,10 @@
                             <thead>
 
                                 <tr>
-                                    <th>المنتج</th>
-                                    <th>الفئة</th>
-                                    <th>الكمية</th>
-                                    <th>الحد الأدنى</th>
+                                    <th>The Product</th>
+                                    <th>Category</th>
+                                    <th>Quantity</th>
+                                    <th>minimum</th>
                                 </tr>
 
                             </thead>
@@ -310,7 +310,7 @@
 
                                             <i class="fa-solid fa-circle-check me-2"></i>
 
-                                            لا توجد منتجات منخفضة المخزون حاليًا 🎉
+                                            There are currently no low-stock products 
 
                                         </td>
 
@@ -340,7 +340,7 @@
 
             <h5 class="mb-3">
                 <i class="fa-solid fa-clock-rotate-left me-2"></i>
-                أحدث النشاطات
+                Latest Activities
             </h5>
 
             <div class="table-responsive">
@@ -350,10 +350,10 @@
                     <thead>
 
                         <tr>
-                            <th>النوع</th>
-                            <th>الوصف</th>
-                            <th>التاريخ</th>
-                            <th>القيمة</th>
+                            <th>Type</th>
+                            <th>Description</th>
+                            <th>Date</th>
+                            <th>Value</th>
                         </tr>
 
                     </thead>
@@ -372,14 +372,14 @@
                                         {
                                             <span class="badge bg-success">
                                                 <i class="fa-solid fa-cart-shopping me-1"></i>
-                                                بيع
+                                                sale
                                             </span>
                                         }
                                         else
                                         {
                                             <span class="badge bg-primary">
                                                 <i class="fa-solid fa-box-open me-1"></i>
-                                                شراء
+                                                buying
                                             </span>
                                         }
 
@@ -400,7 +400,7 @@
 
                                         <strong>
                                             @activity.Amount.ToString("N2")
-                                            ج.م
+                                            EGP
                                         </strong>
 
                                     </td>
@@ -417,7 +417,7 @@
 
                                     <i class="fa-solid fa-inbox me-2"></i>
 
-                                    لا يوجد نشاط حديث بعد
+                                    No recent activity yet.
 
                                 </td>
 
@@ -473,12 +473,12 @@
 
                 labels: topProductsLabels.length
                     ? topProductsLabels
-                    : ["لا توجد بيانات بعد"],
+                    : ["No data yet"],
 
                 datasets: [
 
                     {
-                        label: "الكمية المباعة",
+                        label: "Quantity sold",
 
                         data: topProductsData.length
                             ? topProductsData
