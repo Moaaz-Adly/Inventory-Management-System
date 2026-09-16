@@ -4,6 +4,7 @@ namespace InventoryManagementSystem.Models
 {
     public class PurchaseItem
     {
+        internal decimal Price;
 
         [Key]
         public int PurchaseItemId { get; set; }
