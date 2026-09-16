@@ -139,33 +139,33 @@ namespace InventoryManagementSystem.Controllers
 
             return View("EditProduct", editProVM);
         }
+
         [HttpPost]
         public IActionResult SaveEdit(EditProVM editProVM)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
-                var product = Context.Products.FirstOrDefault(e => e.ProductId == editProVM.ProId);
-
-                if (product == null)
-                {
-                    return NotFound();
-                }
-
-                product.SKU = editProVM.ProSKU;
-                product.ProductName = editProVM.ProName;
-                product.CategoryId = editProVM.CategoryId;
-                product.UnitPrice = editProVM.ProPrice;
-                product.StockQuantity = editProVM.StockQuantity;
-                product.LowStockThreshold = editProVM.LowStockQuantity;
-
-                Context.SaveChanges();
-
-                return RedirectToAction("Index");
+                editProVM.categories = Context.Categories.ToList();
+                return View("EditProduct", editProVM);
             }
 
-            editProVM.categories = Context.Categories.ToList();
+            var product = Context.Products.FirstOrDefault(e => e.ProductId == editProVM.ProId);
 
-            return View("EditProduct", editProVM);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
+            product.SKU = editProVM.ProSKU;
+            product.ProductName = editProVM.ProName;
+            product.CategoryId = editProVM.CategoryId;
+            product.UnitPrice = editProVM.ProPrice;
+            product.StockQuantity = editProVM.StockQuantity;
+            product.LowStockThreshold = editProVM.LowStockQuantity;
+
+            Context.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         public IActionResult RemoveProduct(int id)
@@ -179,7 +179,8 @@ namespace InventoryManagementSystem.Controllers
 
             return View("RemoveProduct", product);
         }
-        [HttpPost, ActionName("RemoveProduct")]
+        [HttpPost]
+        [ActionName("RemoveProduct")]
         public IActionResult DeleteConfirmed(int id)
         {
             var product = Context.Products.FirstOrDefault(e => e.ProductId == id);
