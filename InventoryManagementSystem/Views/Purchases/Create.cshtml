@@ -1,0 +1,401 @@
+﻿@model InventoryManagementSystem.Models.ViewModels.CreatePurchaseViewModel
+
+@{
+    ViewData["Title"] = "Create Purchase";
+
+    var productsJson = ViewBag.ProductsJson ?? "[]";
+}
+
+<h2>Create New Purchase</h2>
+
+<form asp-action="Create" method="post" id="purchaseForm">
+
+    @Html.AntiForgeryToken()
+
+    <div asp-validation-summary="ModelOnly"
+         class="text-danger mb-3">
+    </div>
+
+    <!-- Supplier -->
+    <div class="card mb-4">
+
+        <div class="card-header font-weight-bold">
+            Supplier Selection
+        </div>
+
+        <div class="card-body">
+
+            <div class="form-group col-md-6">
+
+                <label asp-for="SupplierId"
+                       class="control-label">
+                    Supplier
+                </label>
+
+                <select asp-for="SupplierId"
+                        class="form-control"
+                        asp-items="ViewBag.Suppliers">
+
+                    <option value="">
+                        -- Select Supplier --
+                    </option>
+
+                </select>
+
+                <span asp-validation-for="SupplierId"
+                      class="text-danger">
+                </span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Purchase Items -->
+    <div class="card mb-4">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+
+            <span>
+                Purchase Items
+            </span>
+
+            <button type="button"
+                    class="btn btn-sm btn-success"
+                    id="addRowBtn">
+
+                + Add Item
+
+            </button>
+
+        </div>
+
+
+        <div class="card-body">
+
+            <table class="table table-bordered"
+                   id="itemsTable">
+
+                <thead>
+
+                    <tr>
+
+                        <th>
+                            Product
+                        </th>
+
+                        <th width="150">
+                            Quantity
+                        </th>
+
+                        <th width="180">
+                            Unit Cost
+                        </th>
+
+                        <th width="180">
+                            Total Price
+                        </th>
+
+                        <th width="80">
+                            Action
+                        </th>
+
+                    </tr>
+
+                </thead>
+
+
+                <tbody>
+                    <!-- Rows added by JavaScript -->
+                </tbody>
+
+
+                <tfoot>
+
+                    <tr>
+
+                        <td colspan="3"
+                            class="text-start font-weight-bold">
+
+                            Auto Total:
+
+                        </td>
+
+                        <td colspan="2"
+                            class="font-weight-bold text-success h5"
+                            id="grandTotal">
+
+                            0.00
+
+                        </td>
+
+                    </tr>
+
+                </tfoot>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <button type="submit"
+            class="btn btn-primary">
+
+        Save Purchase
+
+    </button>
+
+
+    <a asp-action="Index"
+       class="btn btn-secondary">
+
+        Cancel
+
+    </a>
+
+</form>
+
+
+@section Scripts {
+
+    <partial name="_ValidationScriptsPartial" />
+
+    <script>
+
+        // Products are generated from Controller
+        const productsList = @Html.Raw(productsJson);
+
+        let rowIndex = 0;
+
+
+        // ==========================================
+        // Add Row
+        // ==========================================
+
+        function addRow() {
+
+            let productOptions =
+                '<option value="">-- Select Product --</option>';
+
+
+            if (Array.isArray(productsList)) {
+
+                productsList.forEach(function (p) {
+
+                    productOptions += `
+                        <option
+                            value="${p.Id}"
+                            data-price="${p.CostPrice}">
+                            ${p.Name}
+                        </option>
+                    `;
+
+                });
+
+            }
+
+
+            const row = `
+
+                <tr>
+
+                    <td>
+
+                        <select
+                            name="Items[${rowIndex}].ProductId"
+                            class="form-control product-select"
+                            required>
+
+                            ${productOptions}
+
+                        </select>
+
+                    </td>
+
+
+                    <td>
+
+                        <input
+                            type="number"
+                            name="Items[${rowIndex}].Quantity"
+                            class="form-control qty-input"
+                            min="1"
+                            value="1"
+                            required />
+
+                    </td>
+
+
+                    <td>
+
+                        <input
+                            type="number"
+                            step="0.01"
+                            name="Items[${rowIndex}].UnitCost"
+                            class="form-control cost-input"
+                            value="0.00"
+                            required />
+
+                    </td>
+
+
+                    <td
+                        class="line-total align-middle font-weight-bold">
+
+                        0.00
+
+                    </td>
+
+
+                    <td class="text-center">
+
+                        <button
+                            type="button"
+                            class="btn btn-danger btn-sm remove-row-btn">
+
+                            &times;
+
+                        </button>
+
+                    </td>
+
+                </tr>
+
+            `;
+
+
+            $('#itemsTable tbody').append(row);
+
+            rowIndex++;
+
+            calculateTotals();
+        }
+
+
+        // ==========================================
+        // Document Ready
+        // ==========================================
+
+        $(document).ready(function () {
+
+            // Add first row automatically
+            addRow();
+
+
+            // Add Item button
+            $('#addRowBtn').click(function () {
+
+                addRow();
+
+            });
+
+
+            // Remove row
+            $(document).on(
+                'click',
+                '.remove-row-btn',
+                function () {
+
+                    $(this)
+                        .closest('tr')
+                        .remove();
+
+                    calculateTotals();
+
+                }
+            );
+
+
+            // Product changed
+            $(document).on(
+                'change',
+                '.product-select',
+                function () {
+
+                    const selectedOption =
+                        $(this).find('option:selected');
+
+
+                    const defaultPrice =
+                        parseFloat(
+                            selectedOption.attr('data-price')
+                        ) || 0;
+
+
+                    $(this)
+                        .closest('tr')
+                        .find('.cost-input')
+                        .val(defaultPrice.toFixed(2));
+
+
+                    calculateTotals();
+
+                }
+            );
+
+
+            // Quantity / Cost changed
+            $(document).on(
+                'input',
+                '.qty-input, .cost-input',
+                function () {
+
+                    calculateTotals();
+
+                }
+            );
+
+        });
+
+
+        // ==========================================
+        // Calculate Totals
+        // ==========================================
+
+        function calculateTotals() {
+
+            let grandTotal = 0;
+
+
+            $('#itemsTable tbody tr').each(function () {
+
+                const qty =
+                    parseFloat(
+                        $(this)
+                            .find('.qty-input')
+                            .val()
+                    ) || 0;
+
+
+                const cost =
+                    parseFloat(
+                        $(this)
+                            .find('.cost-input')
+                            .val()
+                    ) || 0;
+
+
+                const total = qty * cost;
+
+
+                $(this)
+                    .find('.line-total')
+                    .text(total.toFixed(2));
+
+
+                grandTotal += total;
+
+            });
+
+
+            $('#grandTotal')
+                .text(grandTotal.toFixed(2));
+
+        }
+
+    </script>
+}

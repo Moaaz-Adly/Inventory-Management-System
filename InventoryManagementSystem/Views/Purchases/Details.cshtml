@@ -1,0 +1,43 @@
+﻿@model InventoryManagementSystem.Models.Purchase
+
+@{
+    ViewData["Title"] = "Purchase Details";
+}
+
+<h2>Purchase Details #@Model.PurchaseId</h2>
+
+<div class="card mb-4">
+    <div class="card-body">
+        <p><strong>Supplier:</strong> @Model.Supplier?.SupplierName</p>
+        <p><strong>Purchase Date:</strong> @Model.PurchaseDate.ToString("yyyy-MM-dd HH:mm")</p>
+        <p><strong>Total Amount:</strong> <span class="text-success font-weight-bold h5">@Model.TotalAmount.ToString("C")</span></p>
+    </div>
+</div>
+
+<h4>Purchased Items</h4>
+<table class="table table-bordered">
+    <thead class="table-light">
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Unit Cost</th>
+            <th>Total Price</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model.PurchaseItems != null && Model.PurchaseItems.Any())
+        {
+            @foreach (var item in Model.PurchaseItems)
+            {
+                var lineTotal = item.Quantity * item.UnitCost;
+                <tr>
+                    <td>@item.Product?.ProductName</td>
+                    <td>@item.Quantity</td>
+                    <td>@item.UnitCost.ToString("C")</td>
+                </tr>
+            }
+        }
+    </tbody>
+</table>
+
+<a asp-action="Index" class="btn btn-secondary">Back to Purchase History</a>
