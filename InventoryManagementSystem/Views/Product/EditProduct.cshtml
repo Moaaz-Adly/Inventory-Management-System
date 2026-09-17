@@ -1,11 +1,11 @@
 ﻿@using InventoryManagementSystem.Models.ViewModel
 @model EditProVM
 
-<div class="container mt-4" asp-validation-summary="All">
+<div class="container mt-4">
 
     <h1 class="text-center mb-4">Edit Product</h1>
 
-    <form asp-action="SaveEdit" method="post">
+    <form asp-controller="Product" asp-action="SaveEdit" method="post">
 
         <input type="hidden" asp-for="ProId" />
 
@@ -23,18 +23,18 @@
 
         <div class="mb-3">
             <label asp-for="CategoryId" class="form-label">Category</label>
-
             <select asp-for="CategoryId" class="form-select">
                 <option value="">-- Select Category --</option>
-
-                @foreach (var category in Model.categories)
+                @if (Model.categories != null)
                 {
-                    <option value="@category.CategoryId">
-                        @category.CategoryName
-                    </option>
+                    foreach (var category in Model.categories)
+                    {
+                        <option value="@category.CategoryId" selected="@(category.CategoryId == Model.CategoryId ? "selected" : null)">
+                            @category.CategoryName
+                        </option>
+                    }
                 }
             </select>
-
             <span asp-validation-for="CategoryId" class="text-danger"></span>
         </div>
 
