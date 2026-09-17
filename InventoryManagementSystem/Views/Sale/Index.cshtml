@@ -1,0 +1,67 @@
+﻿@model IEnumerable<InventoryManagementSystem.Models.Sale>
+
+@{
+    ViewData["Title"] = "Sales History";
+}
+
+<h1>Sales History</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-primary">
+        Create New Sale
+    </a>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                Sale Date
+            </th>
+            <th>
+                Customer Info
+            </th>
+            <th>
+                Total Amount
+            </th>
+            <th>
+                Actions
+            </th>
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var sale in Model)
+        {
+            <tr>
+                <td>
+                    @sale.SaleDate.ToString("yyyy-MM-dd HH:mm")
+                </td>
+
+                <td>
+                    @(string.IsNullOrEmpty(sale.CustomerInfo)
+                                    ? "N/A"
+                                    : sale.CustomerInfo)
+            </td>
+
+                <td>
+                    @sale.TotalAmount.ToString("0.00")
+                </td>
+
+                <td>
+                    <a asp-action="Details"
+                       asp-route-id="@sale.SaleId"
+                       class="btn btn-info btn-sm">
+                        Details
+                    </a>
+
+                    <a asp-action="Receipt"
+                       asp-route-id="@sale.SaleId"
+                       class="btn btn-success btn-sm">
+                        Receipt
+                    </a>
+                </td>
+            </tr>
+                }
+    </tbody>
+</table>

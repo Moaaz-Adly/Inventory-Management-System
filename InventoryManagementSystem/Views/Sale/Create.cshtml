@@ -1,0 +1,192 @@
+﻿@model InventoryManagementSystem.Models.Sale
+
+@{
+    ViewData["Title"] = "Create Sale";
+    var products = ViewBag.Products as List<InventoryManagementSystem.Models.Product>;
+}
+
+<h1>Create Sale</h1>
+
+<hr />
+
+<form asp-action="Create" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+    <div class="mb-3">
+        <label class="form-label">Customer Info</label>
+        <input type="text"
+               name="customerInfo"
+               class="form-control"
+               placeholder="Enter customer name or information" />
+    </div>
+
+    <div id="saleItems">
+
+        <div class="sale-item row mb-3">
+
+            <div class="col-md-6">
+                <label class="form-label">Product</label>
+
+                <select name="productIds"
+                        class="form-select product-select"
+                        required>
+
+                    <option value="">-- Select Product --</option>
+
+                    @foreach (var product in products ?? new List<InventoryManagementSystem.Models.Product>())
+                    {
+                        <option value="@product.ProductId"
+                                data-price="@product.UnitPrice"
+                                data-stock="@product.StockQuantity">
+                            @product.ProductName
+                            - @product.UnitPrice
+                            (Stock: @product.StockQuantity)
+                        </option>
+                    }
+
+                </select>
+            </div>
+
+            <div class="col-md-3">
+                <label class="form-label">Quantity</label>
+
+                <input type="number"
+                       name="quantities"
+                       class="form-control quantity-input"
+                       min="1"
+                       value="1"
+                       required />
+            </div>
+
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="button"
+                        class="btn btn-danger remove-item">
+                    Remove
+                </button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <button type="button"
+            id="addItem"
+            class="btn btn-secondary mb-3">
+        + Add Product
+    </button>
+
+    <div class="mb-3">
+        <label class="form-label">Total Amount</label>
+
+        <input type="text"
+               id="totalAmount"
+               class="form-control"
+               value="0"
+               readonly />
+    </div>
+
+    <button type="submit" class="btn btn-primary">
+        Create Sale
+    </button>
+
+    <a asp-action="Index" class="btn btn-secondary">
+        Back to Sales
+    </a>
+
+</form>
+
+
+@section Scripts {
+
+    <script>
+
+        function calculateTotal() {
+
+            let total = 0;
+
+            document.querySelectorAll(".sale-item").forEach(item => {
+
+                const select = item.querySelector(".product-select");
+                const quantity = item.querySelector(".quantity-input");
+
+                if (select.value && quantity.value) {
+
+                    const selectedOption =
+                        select.options[select.selectedIndex];
+
+                    const price =
+                        parseFloat(selectedOption.dataset.price) || 0;
+
+                    const qty =
+                        parseInt(quantity.value) || 0;
+
+                    total += price * qty;
+                }
+            });
+
+            document.getElementById("totalAmount").value =
+                total.toFixed(2);
+        }
+
+
+        document.addEventListener("change", function (e) {
+
+            if (e.target.classList.contains("product-select") ||
+                e.target.classList.contains("quantity-input")) {
+
+                calculateTotal();
+            }
+
+        });
+
+
+        document.addEventListener("input", function (e) {
+
+            if (e.target.classList.contains("quantity-input")) {
+                calculateTotal();
+            }
+
+        });
+
+
+        document.getElementById("addItem").addEventListener("click", function () {
+
+            const container =
+                document.getElementById("saleItems");
+
+            const firstItem =
+                document.querySelector(".sale-item");
+
+            const newItem =
+                firstItem.cloneNode(true);
+
+            newItem.querySelector(".product-select").value = "";
+
+            newItem.querySelector(".quantity-input").value = 1;
+
+            container.appendChild(newItem);
+
+            calculateTotal();
+        });
+
+
+        document.addEventListener("click", function (e) {
+
+            if (e.target.classList.contains("remove-item")) {
+
+                const items =
+                    document.querySelectorAll(".sale-item");
+
+                if (items.length > 1) {
+
+                    e.target.closest(".sale-item").remove();
+
+                    calculateTotal();
+                }
+            }
+
+        });
+
+    </script>
+}

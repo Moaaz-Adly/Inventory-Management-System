@@ -1,0 +1,80 @@
+﻿@model IEnumerable<InventoryManagementSystem.Models.Product>
+
+@{
+    ViewData["Title"] = "Low Stock";
+}
+
+<h1>Low Stock Products</h1>
+
+<p>
+    Products that have reached or fallen below their low stock threshold.
+</p>
+
+@if (!Model.Any())
+{
+    <div class="alert alert-success">
+        No low stock products found.
+    </div>
+}
+else
+{
+    <table class="table table-bordered table-striped">
+
+        <thead>
+            <tr>
+                <th>Product</th>
+                <th>SKU</th>
+                <th>Current Stock</th>
+                <th>Low Stock Threshold</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+
+        <tbody>
+
+            @foreach (var product in Model)
+            {
+                <tr>
+
+                    <td>
+                        @product.ProductName
+                    </td>
+
+                    <td>
+                        @product.SKU
+                    </td>
+
+                    <td>
+                        @product.StockQuantity
+                    </td>
+
+                    <td>
+                        @product.LowStockThreshold
+                    </td>
+
+                    <td>
+                        @if (product.StockQuantity == 0)
+                        {
+                            <span class="badge bg-danger">
+                                Out of Stock
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-warning text-dark">
+                                Low Stock
+                            </span>
+                        }
+                    </td>
+
+                </tr>
+            }
+
+        </tbody>
+
+    </table>
+}
+
+<a asp-action="Index" class="btn btn-secondary">
+    Back to Sales
+</a>
