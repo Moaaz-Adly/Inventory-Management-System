@@ -144,6 +144,8 @@ namespace InventoryManagementSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult SaveEdit(EditProVM editProVM)
         {
+            ModelState.Remove("categories");
+
             if (!ModelState.IsValid)
             {
                 editProVM.categories = Context.Categories.ToList();
