@@ -1,55 +1,125 @@
-@model InventoryManagementSystem.Models.Supplier
+﻿@model InventoryManagementSystem.Models.Supplier
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Supplier";
 }
 
-<h1>Create</h1>
+<div class="container py-4">
 
-<h4>Supplier</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-
-            <div class="form-group">
-                <label asp-for="SupplierName" class="control-label"></label>
-                <input asp-for="SupplierName" class="form-control" />
-                <span asp-validation-for="SupplierName" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="ContactName" class="control-label"></label>
-                <input asp-for="ContactName" class="form-control" />
-                <span asp-validation-for="ContactName" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Phone" class="control-label"></label>
-                <input asp-for="Phone" class="form-control" />
-                <span asp-validation-for="Phone" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold">Create Supplier</h1>
+        <p class="text-muted">Add a new supplier to your inventory</p>
     </div>
+
+    <!-- Form Card -->
+    <div class="card border-0 shadow-sm" style="max-width: 700px;">
+        <div class="card-body p-4">
+
+            <form asp-action="Create">
+
+                <div asp-validation-summary="ModelOnly"
+                     class="text-danger mb-3"></div>
+
+                <!-- Supplier Name -->
+                <div class="mb-4">
+                    <label asp-for="SupplierName"
+                           class="form-label fw-semibold">
+                        Supplier Name
+                    </label>
+
+                    <input asp-for="SupplierName"
+                           class="form-control"
+                           placeholder="Enter supplier name" />
+
+                    <span asp-validation-for="SupplierName"
+                          class="text-danger small"></span>
+                </div>
+
+                <!-- Contact Name -->
+                <div class="mb-4">
+                    <label asp-for="ContactName"
+                           class="form-label fw-semibold">
+                        Contact Name
+                    </label>
+
+                    <input asp-for="ContactName"
+                           class="form-control"
+                           placeholder="Enter contact name" />
+
+                    <span asp-validation-for="ContactName"
+                          class="text-danger small"></span>
+                </div>
+
+                <!-- Phone -->
+                <div class="mb-4">
+                    <label asp-for="Phone"
+                           class="form-label fw-semibold">
+                        Phone
+                    </label>
+
+                    <input asp-for="Phone"
+                           class="form-control"
+                           placeholder="Enter phone number" />
+
+                    <span asp-validation-for="Phone"
+                          class="text-danger small"></span>
+                </div>
+
+                <!-- Email -->
+                <div class="mb-4">
+                    <label asp-for="Email"
+                           class="form-label fw-semibold">
+                        Email
+                    </label>
+
+                    <input asp-for="Email"
+                           class="form-control"
+                           type="email"
+                           placeholder="Enter email address" />
+
+                    <span asp-validation-for="Email"
+                          class="text-danger small"></span>
+                </div>
+
+                <!-- Address -->
+                <div class="mb-4">
+                    <label asp-for="Address"
+                           class="form-label fw-semibold">
+                        Address
+                    </label>
+
+                    <textarea asp-for="Address"
+                              class="form-control"
+                              rows="3"
+                              placeholder="Enter supplier address"></textarea>
+
+                    <span asp-validation-for="Address"
+                          class="text-danger small"></span>
+                </div>
+
+                <!-- Buttons -->
+                <div class="d-flex gap-2">
+                    <button type="submit"
+                            class="btn btn-primary px-4">
+                        Create Supplier
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-light px-4">
+                        ← Back to Suppliers
+                    </a>
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

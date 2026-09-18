@@ -1,67 +1,393 @@
-@model IEnumerable<InventoryManagementSystem.Models.Supplier>
+﻿@model IEnumerable<InventoryManagementSystem.Models.Supplier>
 
 @{
-	ViewData["Title"] = "Index";
+    ViewData["Title"] = "Suppliers";
+    var supplierCount = Model.Count();
 }
 
-<h1>Index</h1>
+<style>
+    .suppliers-page {
+        padding: 25px 10px;
+    }
 
-<p>
-	<a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-	<thead>
-		<tr>
-			<th>
-				@Html.DisplayNameFor(model => model.SupplierName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.ContactName)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Phone)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Email)
-			</th>
-			<th>
-				@Html.DisplayNameFor(model => model.Address)
-			</th>
-			<th>Products</th>
-			<th></th>
-		</tr>
-	</thead>
-	<tbody>
-		@foreach (var item in Model)
-		{
-			<tr>
-				<td>
-					@Html.DisplayFor(model => item.SupplierName)
-				</td>
-				<td>
-					@Html.DisplayFor(model => item.ContactName)
-				</td>
-				<td>
-					@Html.DisplayFor(model => item.Phone)
-				</td>
-				<td>
-					@Html.DisplayFor(model => item.Email)
-				</td>
-				<td>
-					@Html.DisplayFor(model => item.Address)
-				</td>
-				<td>
-					<a asp-action="Products"
-					   asp-route-id="@item.SupplierId">
-						View Products
-					</a>
-				</td>
-				<td>
-					<a asp-action="Edit" asp-route-id="@item.SupplierId">Edit</a> |
-					<a asp-action="Details" asp-route-id="@item.SupplierId">Details</a> |
-					<a asp-action="Delete" asp-route-id="@item.SupplierId">Delete</a>
-				</td>
-			</tr>
-		}
-	</tbody>
-</table>
+    .page-header {
+        margin-bottom: 25px;
+    }
+
+    .page-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #292d32;
+        margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+        color: #6b7280;
+        font-size: 16px;
+        margin: 0;
+    }
+
+    .add-btn {
+        background: #6366f1;
+        color: white;
+        padding: 11px 20px;
+        border-radius: 9px;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .add-btn:hover {
+            background: #4f46e5;
+            color: white;
+        }
+
+    /* Statistics Card */
+
+    .stats-card {
+        background: white;
+        border-radius: 10px;
+        padding: 20px 25px;
+        margin-bottom: 20px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        display: flex;
+        align-items: center;
+        gap: 18px;
+    }
+
+    .stats-icon {
+        width: 50px;
+        height: 50px;
+        border-radius: 10px;
+        background: #eef2ff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+    }
+
+    .stats-title {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 3px;
+    }
+
+    .stats-number {
+        font-size: 25px;
+        font-weight: 700;
+        color: #292d32;
+    }
+
+    /* Search */
+
+    .search-card {
+        background: white;
+        padding: 18px;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        margin-bottom: 20px;
+    }
+
+    .search-wrapper {
+        position: relative;
+    }
+
+    .search-icon {
+        position: absolute;
+        left: 15px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: #9ca3af;
+        font-size: 18px;
+    }
+
+    .search-input {
+        width: 100%;
+        padding: 11px 15px 11px 43px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        outline: none;
+        font-size: 15px;
+    }
+
+        .search-input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99,102,241,0.1);
+        }
+
+    /* Table */
+
+    .table-card {
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        overflow: hidden;
+    }
+
+    .supplier-table {
+        margin: 0;
+    }
+
+        .supplier-table thead {
+            background: #f8f9fa;
+        }
+
+        .supplier-table th {
+            padding: 16px;
+            color: #374151;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        .supplier-table td {
+            padding: 16px;
+            vertical-align: middle;
+            border-bottom: 1px solid #f0f0f0;
+            color: #4b5563;
+        }
+
+    .supplier-name {
+        font-weight: 600;
+        color: #374151;
+    }
+
+    /* Products Button */
+
+    .products-btn {
+        display: inline-block;
+        padding: 7px 13px;
+        background: #eef2ff;
+        color: #6366f1;
+        border-radius: 7px;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .products-btn:hover {
+            background: #6366f1;
+            color: white;
+        }
+
+    /* Actions */
+
+    .action-link {
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        margin-right: 10px;
+    }
+
+    .edit-link {
+        color: #6366f1;
+    }
+
+    .details-link {
+        color: #6b7280;
+    }
+
+    .delete-link {
+        color: #dc2626;
+    }
+
+    .action-link:hover {
+        text-decoration: underline;
+    }
+
+    .empty-message {
+        text-align: center;
+        padding: 45px;
+        color: #6b7280;
+    }
+</style>
+
+
+<div class="container-fluid suppliers-page">
+
+    <!-- Header -->
+
+    <div class="page-header d-flex justify-content-between align-items-center">
+
+        <div>
+            <h1 class="page-title">Suppliers</h1>
+
+            <p class="page-subtitle">
+                Manage and organize your product suppliers
+            </p>
+        </div>
+
+        <a asp-action="Create" class="add-btn">
+            + Add Supplier
+        </a>
+
+    </div>
+
+
+    <!-- Statistics -->
+
+    <div class="stats-card">
+
+        <div class="stats-icon">
+            🏢
+        </div>
+
+        <div>
+            <div class="stats-title">
+                Total Suppliers
+            </div>
+
+            <div class="stats-number">
+                @supplierCount
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Search -->
+
+    <div class="search-card">
+
+        <div class="search-wrapper">
+
+            <span class="search-icon">
+                🔍
+            </span>
+
+            <input type="text"
+                   id="supplierSearch"
+                   class="search-input"
+                   placeholder="Search suppliers..." />
+
+        </div>
+
+    </div>
+
+
+    <!-- Suppliers Table -->
+
+    <div class="table-card">
+
+        <table class="table supplier-table" id="supplierTable">
+
+            <thead>
+
+                <tr>
+                    <th>Supplier Name</th>
+                    <th>Contact Name</th>
+                    <th>Phone</th>
+                    <th>Email</th>
+                    <th>Address</th>
+                    <th>Products</th>
+                    <th>Actions</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+
+                        <td class="supplier-name">
+                            @Html.DisplayFor(modelItem => item.SupplierName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ContactName)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Phone)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Email)
+                        </td>
+
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Address)
+                        </td>
+
+                        <td>
+
+                            <a asp-action="Products"
+                               asp-route-id="@item.SupplierId"
+                               class="products-btn">
+                                View Products
+                            </a>
+
+                        </td>
+
+                        <td>
+
+                            <a asp-action="Edit"
+                               asp-route-id="@item.SupplierId"
+                               class="action-link edit-link">
+                                Edit
+                            </a>
+
+                            <a asp-action="Details"
+                               asp-route-id="@item.SupplierId"
+                               class="action-link details-link">
+                                Details
+                            </a>
+
+                            <a asp-action="Delete"
+                               asp-route-id="@item.SupplierId"
+                               class="action-link delete-link">
+                                Delete
+                            </a>
+
+                        </td>
+
+                    </tr>
+                }
+
+            </tbody>
+
+        </table>
+
+
+        @if (!Model.Any())
+        {
+            <div class="empty-message">
+                No suppliers found.
+            </div>
+        }
+
+    </div>
+
+</div>
+
+
+<script>
+
+    document.getElementById("supplierSearch")
+        .addEventListener("keyup", function () {
+
+            var searchValue = this.value.toLowerCase();
+
+            var rows = document.querySelectorAll(
+                "#supplierTable tbody tr"
+            );
+
+            rows.forEach(function (row) {
+
+                var supplierName =
+                    row.cells[0].textContent.toLowerCase();
+
+                if (supplierName.includes(searchValue)) {
+                    row.style.display = "";
+                }
+                else {
+                    row.style.display = "none";
+                }
+
+            });
+
+        });
+
+</script>

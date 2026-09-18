@@ -1,59 +1,98 @@
-@model InventoryManagementSystem.Models.Supplier
+﻿@model InventoryManagementSystem.Models.Supplier
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Delete Supplier";
 }
 
-<h1>Delete</h1>
+<div class="container py-4">
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>InventoryManagementSystem.Models.Supplier</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SupplierName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SupplierName)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContactName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContactName)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="SupplierId" />
-        <input type="submit" value="Delete" class="btn btn-danger" /> |
-        <a asp-action="Index">Back to List</a>
-    </form>
+    ```
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold">Delete Supplier</h1>
+        <p class="text-muted">Review the supplier information before deleting</p>
+    </div>
+
+    <!-- Delete Card -->
+    <div class="card border-0 shadow-sm" style="max-width: 700px;">
+        <div class="card-body p-4">
+
+            <!-- Warning -->
+            <div class="alert alert-warning">
+                <strong>Are you sure you want to delete this supplier?</strong>
+                <br />
+                This action cannot be undone.
+            </div>
+
+            <!-- Supplier Information -->
+            <div class="mb-4">
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        Supplier Name
+                    </label>
+                    <div class="form-control bg-light">
+                        @Html.DisplayFor(model => model.SupplierName)
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        Contact Name
+                    </label>
+                    <div class="form-control bg-light">
+                        @Html.DisplayFor(model => model.ContactName)
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        Phone
+                    </label>
+                    <div class="form-control bg-light">
+                        @Html.DisplayFor(model => model.Phone)
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-semibold">
+                        Email
+                    </label>
+                    <div class="form-control bg-light">
+                        @Html.DisplayFor(model => model.Email)
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label class="form-label fw-semibold">
+                        Address
+                    </label>
+                    <div class="form-control bg-light">
+                        @Html.DisplayFor(model => model.Address)
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Buttons -->
+            <form asp-action="Delete">
+                <input type="hidden" asp-for="SupplierId" />
+
+                <div class="d-flex gap-2">
+                    <button type="submit"
+                            class="btn btn-danger px-4">
+                        Delete Supplier
+                    </button>
+
+                    <a asp-action="Index"
+                       class="btn btn-light px-4">
+                        ← Back to Suppliers
+                    </a>
+                </div>
+            </form>
+
+        </div>
+    </div>
+    ```
+
 </div>

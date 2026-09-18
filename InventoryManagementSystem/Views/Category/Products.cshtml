@@ -1,37 +1,85 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
-@model InventoryManagementSystem.Models.Category
+﻿@model InventoryManagementSystem.Models.Category
 
 @{
     ViewData["Title"] = "Category Products";
 }
 
-<h1>Products in @Model.CategoryName</h1>
+<div class="container py-4">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Product Name</th>
-            <th>SKU</th>
-            <th>Unit Price</th>
-            <th>Stock Quantity</th>
-        </tr>
-    </thead>
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold">Products in @Model.CategoryName</h1>
+        <p class="text-muted">
+            View all products belonging to this category
+        </p>
+    </div>
 
-    <tbody>
-        @foreach (var product in Model.Products)
-        {
-            <tr>
-                <td>@product.ProductName</td>
-                <td>@product.SKU</td>
-                <td>@product.UnitPrice</td>
-                <td>@product.StockQuantity</td>
-            </tr>
-        }
-    </tbody>
-</table>
+    <!-- Products Card -->
+    <div class="card border-0 shadow-sm">
 
-<a asp-action="Index" class="btn btn-secondary">Back to Categories</a>
+        <div class="card-body p-0">
+
+            @if (Model.Products.Any())
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+
+                        <thead class="table-light">
+                            <tr>
+                                <th class="px-4">Product Name</th>
+                                <th>SKU</th>
+                                <th>Unit Price</th>
+                                <th>Stock Quantity</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            @foreach (var product in Model.Products)
+                            {
+                                <tr>
+                                    <td class="px-4 fw-semibold">
+                                        @product.ProductName
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-light text-dark">
+                                            @product.SKU
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        @product.UnitPrice.ToString("C")
+                                    </td>
+
+                                    <td>
+                                        @product.StockQuantity
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+
+                    </table>
+                </div>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <h5 class="text-muted">No Products Found</h5>
+                    <p class="text-muted mb-0">
+                        There are no products in this category yet.
+                    </p>
+                </div>
+            }
+
+        </div>
+    </div>
+
+    <!-- Back Button -->
+    <div class="mt-4">
+        <a asp-action="Index"
+           class="btn btn-light px-4">
+            ← Back to Categories
+        </a>
+    </div>
+
+</div>

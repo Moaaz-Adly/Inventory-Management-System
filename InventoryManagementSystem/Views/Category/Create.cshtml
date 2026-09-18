@@ -1,38 +1,174 @@
-@model InventoryManagementSystem.Models.Category
+﻿@model InventoryManagementSystem.Models.Category
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Category";
 }
 
-<h1>Create</h1>
+<style>
+    .form-page {
+        padding: 25px 10px;
+    }
 
-<h4>Category</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+    .page-title {
+        font-size: 32px;
+        font-weight: 700;
+        color: #292d32;
+        margin-bottom: 6px;
+    }
+
+    .page-subtitle {
+        color: #6b7280;
+        font-size: 16px;
+        margin-bottom: 25px;
+    }
+
+    .form-card {
+        background: white;
+        border-radius: 12px;
+        padding: 30px;
+        max-width: 700px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
+
+    .form-label {
+        font-weight: 600;
+        color: #374151;
+        margin-bottom: 8px;
+    }
+
+    .form-control {
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        padding: 11px 13px;
+        font-size: 15px;
+    }
+
+        .form-control:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.1);
+        }
+
+    .form-group {
+        margin-bottom: 20px;
+    }
+
+    .validation {
+        font-size: 13px;
+        margin-top: 5px;
+    }
+
+    .btn-create {
+        background: #6366f1;
+        color: white;
+        border: none;
+        padding: 11px 22px;
+        border-radius: 8px;
+        font-weight: 600;
+        transition: 0.2s;
+    }
+
+        .btn-create:hover {
+            background: #4f46e5;
+            color: white;
+        }
+
+    .back-link {
+        display: inline-block;
+        margin-top: 18px;
+        color: #6366f1;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+</style>
+
+
+<div class="container-fluid form-page">
+
+    <h1 class="page-title">Create Category</h1>
+
+    <p class="page-subtitle">
+        Add a new category to your inventory
+    </p>
+
+
+    <div class="form-card">
+
         <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="CategoryName" class="control-label"></label>
-                <input asp-for="CategoryName" class="form-control" />
-                <span asp-validation-for="CategoryName" class="text-danger"></span>
+            <div asp-validation-summary="ModelOnly"
+                 class="text-danger">
             </div>
 
+
+            <!-- Category Name -->
+
             <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+
+                <label asp-for="CategoryName"
+                       class="form-label">
+                    Category Name
+                </label>
+
+                <input asp-for="CategoryName"
+                       class="form-control"
+                       placeholder="Enter category name" />
+
+                <span asp-validation-for="CategoryName"
+                      class="text-danger validation">
+                </span>
+
             </div>
 
-            
+
+            <!-- Description -->
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+
+                <label asp-for="Description"
+                       class="form-label">
+                    Description
+                </label>
+
+                <textarea asp-for="Description"
+                          class="form-control"
+                          rows="4"
+                          placeholder="Enter category description">
+                </textarea>
+
+                <span asp-validation-for="Description"
+                      class="text-danger validation">
+                </span>
+
             </div>
+
+
+            <!-- Buttons -->
+
+            <button type="submit"
+                    class="btn-create">
+                Create Category
+            </button>
+
+            <br />
+
+            <a asp-action="Index"
+               class="back-link">
+                ← Back to Categories
+            </a>
+
         </form>
+
     </div>
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

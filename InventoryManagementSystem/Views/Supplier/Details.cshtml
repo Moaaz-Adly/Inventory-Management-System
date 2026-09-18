@@ -1,52 +1,95 @@
-@model InventoryManagementSystem.Models.Supplier
+﻿@model InventoryManagementSystem.Models.Supplier
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = "Supplier Details";
 }
 
-<h1>Details</h1>
+<div class="container py-4">
 
-<div>
-    <h4>Supplier</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.SupplierName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.SupplierName)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ContactName)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ContactName)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Phone)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Phone)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Email)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Email)
-        </dd>
-    </dl>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-    
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.SupplierId">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    ```
+    <!-- Header -->
+    <div class="mb-4">
+        <h1 class="fw-bold">Supplier Details</h1>
+        <p class="text-muted">View supplier information</p>
+    </div>
+
+    <!-- Details Card -->
+    <div class="card border-0 shadow-sm" style="max-width: 700px;">
+        <div class="card-body p-4">
+
+            <!-- Supplier Name -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    Supplier Name
+                </label>
+
+                <div class="form-control bg-light">
+                    @Html.DisplayFor(model => model.SupplierName)
+                </div>
+            </div>
+
+            <!-- Contact Name -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    Contact Name
+                </label>
+
+                <div class="form-control bg-light">
+                    @Html.DisplayFor(model => model.ContactName)
+                </div>
+            </div>
+
+            <!-- Phone -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    Phone
+                </label>
+
+                <div class="form-control bg-light">
+                    @Html.DisplayFor(model => model.Phone)
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    Email
+                </label>
+
+                <div class="form-control bg-light">
+                    @Html.DisplayFor(model => model.Email)
+                </div>
+            </div>
+
+            <!-- Address -->
+            <div class="mb-4">
+                <label class="form-label fw-semibold">
+                    Address
+                </label>
+
+                <div class="form-control bg-light">
+                    @Html.DisplayFor(model => model.Address)
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-flex gap-2">
+
+                <a asp-action="Edit"
+                   asp-route-id="@Model?.SupplierId"
+                   class="btn btn-primary px-4">
+                    Edit Supplier
+                </a>
+
+                <a asp-action="Index"
+                   class="btn btn-light px-4">
+                    ← Back to Suppliers
+                </a>
+
+            </div>
+
+        </div>
+    </div>
+    ```
+
 </div>
