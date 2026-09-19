@@ -1,0 +1,82 @@
+﻿@{
+    ViewData["Title"] = "Inventory Assistant";
+}
+
+<div class="container py-5">
+
+    <div class="text-center mb-5">
+
+        <h1 class="fw-bold">
+            🤖 Inventory Assistant
+        </h1>
+
+        <p class="text-muted">
+            اسألني عن المنتجات والمخزون والموردين
+            والمبيعات والمشتريات
+        </p>
+
+    </div>
+
+
+    <div class="card shadow-sm border-0">
+
+        <div class="card-body p-4">
+
+            <form asp-controller="InventoryAssistant"
+                  asp-action="Ask"
+                  method="post">
+
+                <div class="mb-3">
+
+                    <label class="form-label fw-bold">
+                        اكتب سؤالك
+                    </label>
+
+                    <textarea name="question"
+                              class="form-control"
+                              rows="4"
+                              placeholder="مثال: ايه المنتجات اللي قربت تخلص؟"
+                              required>@ViewBag.Question</textarea>
+
+                </div>
+
+
+                <button type="submit"
+                        class="btn btn-primary px-4">
+
+                    🤖 اسأل المساعد
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    @if (ViewBag.Answer != null)
+    {
+        <div class="card shadow-sm border-0 mt-4">
+
+            <div class="card-header bg-primary text-white">
+
+                <strong>
+                    🤖 Inventory Assistant
+                </strong>
+
+            </div>
+
+
+            <div class="card-body">
+
+                <div style="white-space: pre-wrap;">
+                    @ViewBag.Answer
+                </div>
+
+            </div>
+
+        </div>
+    }
+
+</div>

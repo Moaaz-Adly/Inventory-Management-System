@@ -1,5 +1,6 @@
 using InventoryManagementSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using InventoryManagementSystem.Services;
 
 
 namespace InventoryManagementSystem
@@ -16,6 +17,9 @@ namespace InventoryManagementSystem
             {
                 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
+            builder.Services.AddHttpClient();
+
+            builder.Services.AddScoped<InventoryAssistantService>();
 
             var app = builder.Build();
 
