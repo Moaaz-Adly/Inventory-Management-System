@@ -8,6 +8,6 @@
         public decimal ProPrice { get; set; }
         public int StockQuantity { get; set; }
         public int LowStockQuantity { get; set; }
-        public List<Category> categories { get; set; }
+        public List<Category>? categories { get; set; }
     }
 }
