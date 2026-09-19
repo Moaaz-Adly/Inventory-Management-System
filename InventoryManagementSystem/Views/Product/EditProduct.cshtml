@@ -1,71 +1,137 @@
 ﻿@using InventoryManagementSystem.Models.ViewModel
 @model EditProVM
 
-<div class="container mt-4" asp-validation-summary="All">
+@{
+    ViewData["Title"] = "Edit Product";
+}
 
-    <h1 class="text-center mb-4">Edit Product</h1>
+<style>
+    .form-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-    <form asp-action="SaveEdit" method="post">
+    .hero-card {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border-radius: 20px;
+        color: #ffffff;
+    }
 
-        <input type="hidden" asp-for="ProId" />
+    .glass-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
 
-        <div class="mb-3">
-            <label asp-for="ProSKU" class="form-label"></label>
-            <input asp-for="ProSKU" class="form-control" />
-            <span asp-validation-for="ProSKU" class="text-danger"></span>
-        </div>
+    .form-label {
+        font-size: 0.85rem;
+        color: #475569;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.4rem;
+    }
 
-        <div class="mb-3">
-            <label asp-for="ProName" class="form-label"></label>
-            <input asp-for="ProName" class="form-control" />
-            <span asp-validation-for="ProName" class="text-danger"></span>
-        </div>
+    .form-control, .form-select {
+        border-radius: 10px;
+        border: 1px solid #cbd5e1;
+        padding: 0.65rem 0.9rem;
+        font-weight: 500;
+        color: #1e293b;
+        transition: all 0.2s ease;
+    }
 
-        <div class="mb-3">
-            <label asp-for="CategoryId" class="form-label">Category</label>
+        .form-control:focus, .form-select:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
+        }
+</style>
 
-            <select asp-for="CategoryId" class="form-select">
-                <option value="">-- Select Category --</option>
-
-                @foreach (var category in Model.categories)
-                {
-                    <option value="@category.CategoryId">
-                        @category.CategoryName
-                    </option>
-                }
-            </select>
-
-            <span asp-validation-for="CategoryId" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="ProPrice" class="form-label"></label>
-            <input asp-for="ProPrice" class="form-control" />
-            <span asp-validation-for="ProPrice" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="StockQuantity" class="form-label"></label>
-            <input asp-for="StockQuantity" class="form-control" />
-            <span asp-validation-for="StockQuantity" class="text-danger"></span>
-        </div>
-
-        <div class="mb-3">
-            <label asp-for="LowStockQuantity" class="form-label"></label>
-            <input asp-for="LowStockQuantity" class="form-control" />
-            <span asp-validation-for="LowStockQuantity" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-success">
-            Save Changes
-        </button>
-
-        <a asp-action="Index" class="btn btn-secondary">
-            Back
+<div class="container my-4 form-wrapper">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm fw-semibold d-inline-flex align-items-center gap-2">
+            ← Back to Products
         </a>
+        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-semibold">
+            Editing ID: #@Model.ProId
+        </span>
+    </div>
+    <div class="hero-card p-4 p-md-5 mb-4 shadow-lg position-relative overflow-hidden">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 px-3 py-1 rounded-pill fw-bold fs-7">
+                        Inventory Update
+                    </span>
+                </div>
+                <h1 class="display-6 fw-bold mb-1 text-white">Edit Product</h1>
+                <p class="text-light opacity-50 mb-0">Modify product information and inventory thresholds</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <div class="icon-box bg-white bg-opacity-10 p-3 rounded-4 d-inline-block text-center ms-auto">
+                    <span class="fs-1">✏️</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="glass-card p-4 p-md-5">
+        <form asp-controller="Product" asp-action="SaveEdit" method="post">
+            <input type="hidden" asp-for="ProId" />
+            <div asp-validation-summary="ModelOnly" class="alert alert-danger rounded-3 mb-4" role="alert"></div>
 
-    </form>
-
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <label asp-for="ProSKU" class="form-label">Product SKU</label>
+                    <input asp-for="ProSKU" class="form-control" />
+                    <span asp-validation-for="ProSKU" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ProName" class="form-label">Product Name</label>
+                    <input asp-for="ProName" class="form-control" />
+                    <span asp-validation-for="ProName" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="CategoryId" class="form-label">Category</label>
+                    <select asp-for="CategoryId" class="form-select">
+                        <option value="">-- Select Category --</option>
+                        @if (Model.categories != null)
+                        {
+                            foreach (var category in Model.categories)
+                            {
+                                <option value="@category.CategoryId" selected="@(category.CategoryId == Model.CategoryId ? "selected" : null)">
+                                    @category.CategoryName
+                                </option>
+                            }
+                        }
+                    </select>
+                    <span asp-validation-for="CategoryId" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="ProPrice" class="form-label">Unit Price ($)</label>
+                    <input asp-for="ProPrice" type="number" step="0.01" class="form-control" />
+                    <span asp-validation-for="ProPrice" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="StockQuantity" class="form-label">Stock Quantity</label>
+                    <input asp-for="StockQuantity" type="number" class="form-control" />
+                    <span asp-validation-for="StockQuantity" class="text-danger small mt-1 d-block"></span>
+                </div>
+                <div class="col-md-6">
+                    <label asp-for="LowStockQuantity" class="form-label">Low Stock Threshold</label>
+                    <input asp-for="LowStockQuantity" type="number" class="form-control" />
+                    <span asp-validation-for="LowStockQuantity" class="text-danger small mt-1 d-block"></span>
+                </div>
+            </div>
+            <div class="d-flex justify-content-end align-items-center gap-2 mt-5 pt-3 border-top">
+                <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm fw-semibold">
+                    Cancel
+                </a>
+                <button type="submit" class="btn btn-success rounded-pill px-4 shadow-sm fw-semibold d-inline-flex align-items-center gap-2">
+                    <span>💾</span> Save Changes
+                </button>
+            </div>
+        </form>
+    </div>
 </div>
 
 @section Scripts {
