@@ -1,89 +1,217 @@
-﻿@using InventoryManagementSystem.Models.ViewModel
-@model DetailsProVM
+﻿@model InventoryManagementSystem.Models.ViewModel.DetailsProVM
 
-<div class="container mt-5">
+@{
+    ViewData["Title"] = "Product Details";
+}
 
-    <h1 class="text-center mb-4">Product Details</h1>
+<style>
+    .details-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
 
-    <div class="card shadow">
+    .glass-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+    }
 
-        <div class="card-body">
+    .hero-card {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border-radius: 20px;
+        color: #ffffff;
+    }
 
-            <h3 class="mb-4">@Model.ProductName</h3>
+    .stat-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        padding: 1.25rem;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-            <table class="table table-bordered">
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.08);
+        }
 
-                <tr>
-                    <th>Product ID</th>
-                    <td>@Model.ProductID</td>
-                </tr>
+    .icon-box {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.25rem;
+    }
 
-                <tr>
-                    <th>SKU</th>
-                    <td>@Model.SKU</td>
-                </tr>
+    .info-label {
+        font-size: 0.85rem;
+        color: #64748b;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+    }
 
-                <tr>
-                    <th>Product Name</th>
-                    <td>@Model.ProductName</td>
-                </tr>
+    .info-value {
+        font-size: 0.95rem;
+        color: #0f172a;
+        font-weight: 600;
+    }
+</style>
 
-                <tr>
-                    <th>Category</th>
-                    <td>@Model.CategoryName</td>
-                </tr>
-
-                <tr>
-                    <th>Unit Price</th>
-                    <td>@Model.UnitPrice</td>
-                </tr>
-
-                <tr>
-                    <th>Stock Quantity</th>
-                    <td>@Model.StockQuantity</td>
-                </tr>
-
-                <tr>
-                    <th>Low Stock Threshold</th>
-                    <td>@Model.LowStockThreshold</td>
-                </tr>
-
-                <tr>
-                    <th>Total Purchased</th>
-                    <td>@Model.TotalPurchasedQuantity</td>
-                </tr>
-
-                <tr>
-                    <th>Total Sold</th>
-                    <td>@Model.TotalSoldQuantity</td>
-                </tr>
-
-                <tr>
-                    <th>Supplier</th>
-                    <td>@Model.SupplierName</td>
-                </tr>
-
-            </table>
-
-            <a asp-action="Edit"
-               asp-route-id="@Model.ProductID"
-               class="btn btn-warning">
-                Edit
+<div class="container my-4 details-wrapper">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="Index" class="btn btn-outline-secondary rounded-pill px-4 shadow-sm fw-semibold">
+            ← Back to Products
+        </a>
+        <div class="d-flex gap-2">
+            <a asp-action="EditProduct" asp-route-id="@Model.ProductID" class="btn btn-primary rounded-pill px-4 shadow-sm fw-semibold">
+                ✏️ Edit Product
             </a>
-
-            <a asp-action="Delete"
-               asp-route-id="@Model.ProductID"
-               class="btn btn-danger">
-                Delete
+            <a asp-action="Delete" asp-route-id="@Model.ProductID" class="btn btn-outline-danger rounded-pill px-4 shadow-sm fw-semibold">
+                🗑️ Delete
             </a>
-
-            <a asp-action="Index"
-               class="btn btn-secondary">
-                Back
-            </a>
-
+        </div>
+    </div>
+    <div class="hero-card p-4 p-md-5 mb-4 shadow-lg position-relative overflow-hidden">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center gap-2 mb-3">
+                    <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 px-3 py-2 rounded-pill fw-bold fs-7">
+                        @Model.CategoryName
+                    </span>
+                    <span class="badge bg-light bg-opacity-10 text-light border border-light border-opacity-10 px-3 py-2 rounded-pill fs-7">
+                        SKU: @Model.SKU
+                    </span>
+                </div>
+                <h1 class="display-6 fw-bold mb-2 text-white">@Model.ProductName</h1>
+                <p class="text-light opacity-50 mb-0">Product ID: #@Model.ProductID</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <div class="p-3 rounded-4 d-inline-block text-start text-md-end w-100" style="background: rgba(255, 255, 255, 0.07); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.12);">
+                    <small class="text-uppercase tracking-wider text-light opacity-75 d-block mb-1 fs-7 fw-bold">Unit Price</small>
+                    <span class="display-6 fw-bold text-emerald" style="color: #34d399;">$@Model.UnitPrice.ToString("N2")</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="info-label">Stock Quantity</span>
+                    <div class="icon-box bg-primary bg-opacity-10 text-primary">📦</div>
+                </div>
+                <h3 class="fw-bold mb-1 @(Model.StockQuantity <= Model.LowStockThreshold ? "text-danger" : "text-dark")">
+                    @Model.StockQuantity
+                </h3>
+                <small class="text-muted">Available Units</small>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="info-label">Low Stock</span>
+                    <div class="icon-box bg-warning bg-opacity-10 text-warning">⚠️</div>
+                </div>
+                <h3 class="fw-bold text-warning mb-1">
+                    @Model.LowStockThreshold
+                </h3>
+                <small class="text-muted">Alert Threshold</small>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="info-label">Purchased</span>
+                    <div class="icon-box bg-info bg-opacity-10 text-info">📥</div>
+                </div>
+                <h3 class="fw-bold text-info mb-1">
+                    @Model.TotalPurchasedQuantity
+                </h3>
+                <small class="text-muted">Total Bought</small>
+            </div>
+        </div>
+        <div class="col-6 col-md-3">
+            <div class="stat-card">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <span class="info-label">Total Sold</span>
+                    <div class="icon-box bg-success bg-opacity-10 text-success">📤</div>
+                </div>
+                <h3 class="fw-bold text-success mb-1">
+                    @Model.TotalSoldQuantity
+                </h3>
+                <small class="text-muted">Total Sold Out</small>
+            </div>
+        </div>
+    </div>
+    <!-- Detailed Specification Grid Section -->
+    <div class="glass-card p-4">
+        <div class="d-flex align-items-center justify-content-between mb-4 pb-2 border-bottom">
+            <h5 class="fw-bold text-dark m-0 d-flex align-items-center gap-2">
+                <span>📊</span> Technical Specifications & Supplier
+            </h5>
+            <span class="badge bg-light text-dark border px-3 py-2 fw-semibold">
+                ID: #@Model.ProductID
+            </span>
         </div>
 
+        <div class="row g-3">
+            <div class="col-md-6 col-lg-4">
+                <div class="p-3 rounded-3 border bg-light bg-opacity-50 h-100">
+                    <small class="text-muted fw-bold d-block mb-1 text-uppercase fs-7">Product Name</small>
+                    <span class="fw-bold text-dark fs-6 d-block">@Model.ProductName</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="p-3 rounded-3 border bg-light bg-opacity-50 h-100">
+                    <small class="text-muted fw-bold d-block mb-1 text-uppercase fs-7">SKU Identification</small>
+                    <code class="fw-bold text-primary fs-6">@Model.SKU</code>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="p-3 rounded-3 border bg-light bg-opacity-50 h-100">
+                    <small class="text-muted fw-bold d-block mb-1 text-uppercase fs-7">Category</small>
+                    <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 px-3 py-1 fw-semibold fs-7 mt-1">
+                        @Model.CategoryName
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="p-3 rounded-3 border bg-light bg-opacity-50 h-100">
+                    <small class="text-muted fw-bold d-block mb-1 text-uppercase fs-7">Unit Selling Price</small>
+                    <span class="fw-bold text-success fs-5">$@Model.UnitPrice.ToString("N2")</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="p-3 rounded-3 border bg-light bg-opacity-50 h-100">
+                    <small class="text-muted fw-bold d-block mb-1 text-uppercase fs-7">Authorized Supplier</small>
+                    <span class="fw-bold text-dark fs-6 d-block">🏢 @Model.SupplierName</span>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="p-3 rounded-3 border bg-light bg-opacity-50 h-100">
+                    <small class="text-muted fw-bold d-block mb-1 text-uppercase fs-7">Current Health Status</small>
+                    <div class="mt-1">
+                        @if (Model.StockQuantity <= Model.LowStockThreshold)
+                        {
+                            <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 px-3 py-2 fw-semibold">
+                                ⚠️ Action Required (Low)
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 px-3 py-2 fw-semibold">
+                                ✅ Optimal Inventory
+                            </span>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-
+        </div>
+    </div>
 </div>

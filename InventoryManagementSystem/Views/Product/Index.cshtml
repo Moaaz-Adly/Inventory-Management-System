@@ -1,123 +1,246 @@
 ﻿@model List<Product>
-<form asp-action="Index" method="get" class="mb-4">
-    <div class="input-group">
-        <input type="text"
-               name="search"
-               class="form-control"
-               placeholder="Search by Product Name or SKU"
-               value="@Context.Request.Query["search"]" />
 
-        <button type="submit" class="btn btn-success">
-            Search
-        </button>
+@{
+    ViewData["Title"] = "Products Management";
+}
+
+<style>
+    .index-wrapper {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    .hero-card {
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+        border-radius: 20px;
+        color: #ffffff;
+    }
+
+    .glass-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.05);
+    }
+
+    .custom-table {
+        margin-bottom: 0;
+    }
+
+        .custom-table thead th {
+            background-color: #f8fafc;
+            color: #475569;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #e2e8f0;
+            padding: 1rem;
+        }
+
+        .custom-table tbody td {
+            padding: 1rem;
+            vertical-align: middle;
+            color: #1e293b;
+            font-weight: 500;
+            border-bottom: 1px solid #f1f5f9;
+        }
+
+        .custom-table tbody tr:hover {
+            background-color: #f8fafc;
+        }
+
+        .custom-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+    .search-filter-card {
+        background: #ffffff;
+        border-radius: 16px;
+        border: 1px solid #e2e8f0;
+    }
+</style>
+
+<div class="container my-4 index-wrapper">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <a asp-action="AddProduct" class="btn btn-primary rounded-pill px-4 shadow-sm fw-semibold d-inline-flex align-items-center gap-2">
+            <span>➕</span> Add New Product
+        </a>
+        <span class="badge bg-light text-dark border px-3 py-2 rounded-pill fw-semibold">
+            Total Products: @Model.Count()
+        </span>
     </div>
-</form>
-<form asp-action="Index" method="get" class="mb-4">
-    <div class="input-group">
-        <select name="categoryId" class="form-select">
-            <option value="">All Categories</option>
-
-            @foreach (var category in ViewBag.Categories)
-            {
-                <option value="@category.CategoryId">
-                    @category.CategoryName
-                </option>
-            }
-        </select>
-
-        <button type="submit" class="btn btn-success">
-            Filter
-        </button>
-    </div>
-</form>
-<div class="container mt-4">
-
-    <h1 class="text-center mb-4">Products</h1>
-
-    <table class="table table-striped table-hover table-bordered text-center align-middle">
-
-        <thead class="table-dark">
-            <tr>
-                <th>Product ID</th>
-                <th>SKU</th>
-                <th>Product Name</th>
-                <th>Category</th>
-                <th>Unit Price</th>
-                <th>Stock Quantity</th>
-                <th>Low Stock Threshold</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            @if (!Model.Any())
-            {
-
-                
-                <div class="alert alert-warning text-center">
-                    No products found.
+    <div class="hero-card p-4 p-md-5 mb-4 shadow-lg position-relative overflow-hidden">
+        <div class="row align-items-center">
+            <div class="col-md-8">
+                <div class="d-flex align-items-center gap-2 mb-2">
+                    <span class="badge bg-primary bg-opacity-25 text-primary border border-primary border-opacity-25 px-3 py-1 rounded-pill fw-bold fs-7">
+                        Inventory System
+                    </span>
                 </div>
-            }
-            else
-            {
-                @foreach (var product in Model)
-                {
-                    <tr>
-                        <td>@product.ProductId</td>
-                        <td>@product.SKU</td>
-                        <td>@product.ProductName</td>
-                        <td>@product.CategoryId</td>
-                        <td>@product.UnitPrice</td>
-                        <td>@product.StockQuantity</td>
-                        <td>@product.LowStockThreshold</td>
-                        <td>
-                            <a asp-controller="Product"
-                               asp-action="Details"
-                               asp-route-id="@product.ProductId"
-                               class="btn btn-primary">
-                                Product Details
-                            </a>
-                        </td>
-                        <td>
-                            <a asp-action="EditProduct" class="btn btn-primary mb-3">Edit</a>
-                        </td>
-                        <td>
-                            <a asp-action="RemoveProduct" class="btn btn-danger mb-3" asp-route-id="@product.ProductId">Delete</a>
-                        </td>
-                        <td>
-                            <a asp-action="Stock" class="btn btn-info">
-                                Stock Browsing
-                            </a>
-                        </td>
-                    </tr>
-                }
-            }
-        </tbody>
+                <h1 class="display-6 fw-bold mb-1 text-white">Product Catalog</h1>
+                <p class="text-light opacity-50 mb-0">Manage, filter, and track your inventory stock levels</p>
+            </div>
+            <div class="col-md-4 text-md-end mt-3 mt-md-0">
+                <div class="icon-box bg-white bg-opacity-10 p-3 rounded-4 d-inline-block text-center ms-auto">
+                    <span class="fs-1">🛍️</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="search-filter-card p-3 mb-4 shadow-sm">
+        <div class="row g-3">
+            <div class="col-md-6">
+                <form asp-action="Index" method="get">
+                    <input type="hidden" name="categoryId" value="@Context.Request.Query["categoryId"]" />
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted">🔍</span>
+                        <input type="text"
+                               name="search"
+                               class="form-control border-start-0"
+                               placeholder="Search by Product Name or SKU..."
+                               value="@Context.Request.Query["search"]" />
+                        <button type="submit" class="btn btn-primary px-3 fw-semibold">Search</button>
+                        @if (!string.IsNullOrEmpty(Context.Request.Query["search"]))
+                        {
+                            <a asp-action="Index" class="btn btn-outline-secondary px-3">Clear</a>
+                        }
+                    </div>
+                </form>
+            </div>
+            <div class="col-md-6">
+                <form asp-action="Index" method="get">
+                    <input type="hidden" name="search" value="@Context.Request.Query["search"]" />
+                    <div class="input-group">
+                        <span class="input-group-text bg-transparent border-end-0 text-muted">🏷️</span>
+                        <select name="categoryId" class="form-select border-start-0">
+                            <option value="">All Categories</option>
+                            @if (ViewBag.Categories != null)
+                            {
+                                foreach (var category in ViewBag.Categories)
+                                {
+                                    var isSelected = Context.Request.Query["categoryId"] == category.CategoryId.ToString();
+                                    <option value="@category.CategoryId" selected="@isSelected">
+                                        @category.CategoryName
+                                    </option>
+                                }
+                            }
+                        </select>
+                        <button type="submit" class="btn btn-outline-primary px-3 fw-semibold">Filter</button>
+                        @if (!string.IsNullOrEmpty(Context.Request.Query["categoryId"]))
+                        {
+                            <a asp-action="Index" class="btn btn-outline-secondary px-3">Reset</a>
+                        }
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 
-    </table>
-    <a asp-action="AddProduct" class="btn btn-success mb-3">Add New Product</a>
-    <div>
-        @if (ViewBag.TotalPages > 1)
+    <!-- Products Data Table Card -->
+    <div class="glass-card overflow-hidden">
+        @if (!Model.Any())
         {
-            <nav class="mt-4">
-                <ul class="pagination justify-content-center">
-
-                    @for (int i = 1; i <= ViewBag.TotalPages; i++)
-                    {
-                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
-                            <a class="page-link"
-                               asp-action="Index"
-                               asp-route-page="@i"
-                               asp-route-search="@Context.Request.Query["search"]"
-                               asp-route-categoryId="@Context.Request.Query["categoryId"]">
-                                @i
-                            </a>
-                        </li>
-                    }
-
-                </ul>
-            </nav>
+            <div class="text-center p-5">
+                <div class="fs-1 mb-2">🔍</div>
+                <h5 class="fw-bold text-dark">No Products Found</h5>
+                <p class="text-muted mb-3">Try adjusting your search criteria or clear filters.</p>
+                <a asp-action="Index" class="btn btn-outline-primary rounded-pill px-4">Reset Search</a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+                <table class="table custom-table align-middle text-center">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>SKU</th>
+                            <th class="text-start">Product Name</th>
+                            <th>Category</th>
+                            <th>Unit Price</th>
+                            <th>Stock</th>
+                            <th>Threshold</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in Model)
+                        {
+                            <tr>
+                                <td class="text-muted fw-bold">#@product.ProductId</td>
+                                <td>
+                                    <code class="fw-bold text-primary">@product.SKU</code>
+                                </td>
+                                <td class="text-start">
+                                    <span class="fw-bold text-dark d-block">@product.ProductName</span>
+                                </td>
+                                <td>
+                                    <span class="badge bg-light text-dark border px-2 py-1 rounded-pill fs-7">
+                                        @product.CategoryId
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold text-success">$@product.UnitPrice.ToString("N2")</span>
+                                </td>
+                                <td>
+                                    <span class="fw-bold @(product.StockQuantity <= product.LowStockThreshold ? "text-danger" : "text-dark")">
+                                        @product.StockQuantity
+                                    </span>
+                                </td>
+                                <td>
+                                    <span class="text-muted fw-semibold">@product.LowStockThreshold</span>
+                                </td>
+                                <td>
+                                    <div class="d-flex justify-content-center align-items-center gap-1">
+                                        <a asp-controller="Product"
+                                           asp-action="Details"
+                                           asp-route-id="@product.ProductId"
+                                           class="btn btn-sm btn-outline-primary rounded-pill px-3 shadow-sm d-inline-flex align-items-center gap-1">
+                                            👁️ Details
+                                        </a>
+                                        <a asp-action="Stock"
+                                           class="btn btn-sm btn-outline-info rounded-pill px-3 shadow-sm text-dark d-inline-flex align-items-center gap-1">
+                                            📦 Stock
+                                        </a>
+                                        <form asp-controller="Product"
+                                              asp-action="RemoveProduct"
+                                              asp-route-id="@product.ProductId"
+                                              method="post"
+                                              class="d-inline">
+                                            <button type="submit"
+                                                    class="btn btn-sm btn-outline-danger rounded-pill px-3 shadow-sm d-inline-flex align-items-center gap-1"
+                                                    onclick="return confirm('Are you sure you want to delete this product?');">
+                                                🗑️ Delete
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
         }
     </div>
+    @if (ViewBag.TotalPages != null && ViewBag.TotalPages > 1)
+    {
+        <nav class="mt-4">
+            <ul class="pagination justify-content-center gap-1">
+                @for (int i = 1; i <= ViewBag.TotalPages; i++)
+                {
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                        <a class="page-link rounded-circle border-0 fw-semibold px-3 py-2"
+                           asp-action="Index"
+                           asp-route-page="@i"
+                           asp-route-search="@Context.Request.Query["search"]"
+                           asp-route-categoryId="@Context.Request.Query["categoryId"]">
+                            @i
+                        </a>
+                    </li>
+                }
+            </ul>
+        </nav>
+    }
 </div>
 
 

@@ -34,7 +34,6 @@ namespace InventoryManagementSystem.Controllers
             ViewBag.Categories = Context.Categories.ToList();
 
             int totalProducts = products.Count();
-
             var pagedProducts = products
                 .Skip((page - 1) * pageSize)
                 .Take(pageSize)
@@ -116,6 +115,7 @@ namespace InventoryManagementSystem.Controllers
 
             return View("AddProduct", addProVM);
         }
+        [HttpGet]
         public IActionResult EditProduct(int id)
         {
             var product = Context.Products.FirstOrDefault(e => e.ProductId == id);
@@ -141,8 +141,11 @@ namespace InventoryManagementSystem.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public IActionResult SaveEdit(EditProVM editProVM)
         {
+            ModelState.Remove("categories");
+
             if (!ModelState.IsValid)
             {
                 editProVM.categories = Context.Categories.ToList();
